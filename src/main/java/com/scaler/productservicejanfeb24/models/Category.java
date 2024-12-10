@@ -1,18 +1,32 @@
 package com.scaler.productservicejanfeb24.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class Category
-{
+public class Category {
     private long id;
     private String title;
+
+    public Category(long id, String title) {
+        this.id = id;
+        this.title = title;
+    }
+
+    public Category() {
+    }
+
+    public long getId() {
+        return this.id;
+    }
+
+    public String getTitle() {
+        return this.title;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }
 
 /*
