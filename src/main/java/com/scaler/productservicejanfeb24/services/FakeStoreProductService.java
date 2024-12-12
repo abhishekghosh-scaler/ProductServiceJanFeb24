@@ -6,6 +6,7 @@ import com.scaler.productservicejanfeb24.models.Product;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,7 +22,22 @@ public class FakeStoreProductService implements ProductService
 
     @Override
     public List<Product> getAllProducts() {
-        return List.of();
+        /* Getting an array of FakeStoreDTO objects */
+        FakeStoreProductDto[] fakeStoreProductDtoArray = restTemplate.getForObject(
+                "https://fakestoreapi.com/products",
+                FakeStoreProductDto[].class);
+
+        //Creating a list, which will be returned by the method
+        List<Product> products = new ArrayList<>();
+
+        //Iterate over the array and convert individual FakeStore DTO to product, then add the product to list
+        for(FakeStoreProductDto fakeStoreProductDto : fakeStoreProductDtoArray)
+        {
+            Product product = fakeStoreProductDto.toProduct();
+            products.add(product);
+        }
+
+        return products;
     }
 
     /*
@@ -34,8 +50,23 @@ public class FakeStoreProductService implements ProductService
         return fakeStoreProductDto.toProduct();
     }
 
+    /*
+    * This is dummy a dummy endpoint. It does nothing.
+    * */
     @Override
-    public void CreateProduct(CreateProductDto createProductDto) {
+    public Product CreateProduct(CreateProductDto createProductDto) {
+        FakeStoreProductDto fakeStoreProductDto = new FakeStoreProductDto();
 
+        fakeStoreProductDto.setTitle(createProductDto.getTitle());
+        fakeStoreProductDto.setDescription(createProductDto.getDescription());
+        fakeStoreProductDto.setPrice(createProductDto.getPrice());
+        fakeStoreProductDto.setCategory(createProductDto.getCategory());
+        fakeStoreProductDto.setImage(createProductDto.getImage());
+
+        FakeStoreProductDto fakeStoreProductDto1 =  restTemplate.postForObject("https://fakestoreapi.com/products",
+                fakeStoreProductDto,
+                FakeStoreProductDto.class);
+
+        return fakeStoreProductDto1.toProduct();
     }
 }

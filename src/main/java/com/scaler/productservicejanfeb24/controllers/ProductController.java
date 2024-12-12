@@ -51,9 +51,12 @@ public class ProductController
     * .
     * }
     * */
+    /*
+    * We're changing the return type from void to Product just for testing
+    * */
     @PostMapping("/products")
-    public void createProduct(CreateProductDto createProductDto)
+    public Product createProduct(@RequestBody CreateProductDto createProductDto)
     {
-        productService.CreateProduct(createProductDto);
+        return productService.CreateProduct(createProductDto);
     }
 }
