@@ -4,6 +4,8 @@ import com.scaler.productservicejanfeb24.dtos.CreateProductDto;
 import com.scaler.productservicejanfeb24.models.Product;
 import com.scaler.productservicejanfeb24.services.FakeStoreProductService;
 import com.scaler.productservicejanfeb24.services.ProductService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,9 +37,22 @@ public class ProductController
     * GET /products/{id}
     * */
     @GetMapping("/products/{id}")
-    public Product getSingleProduct(@PathVariable("id") long id)
+    public ResponseEntity<Product> getSingleProduct(@PathVariable("id") long id)
     {
-        return productService.getSingleProduct(id);
+        Product product = productService.getSingleProduct(id);
+
+        ResponseEntity<Product> responseProductEntity;
+
+        if(product == null)
+        {
+            responseProductEntity = new ResponseEntity<>(product, HttpStatus.NOT_FOUND);
+        }
+        else
+        {
+            responseProductEntity = new ResponseEntity<>(product, HttpStatus.OK);
+        }
+
+        return responseProductEntity;
     }
 
     /*
@@ -57,6 +72,10 @@ public class ProductController
     @PostMapping("/products")
     public Product createProduct(@RequestBody CreateProductDto createProductDto)
     {
-        return productService.CreateProduct(createProductDto);
+        return productService.CreateProduct(createProductDto.getTitle(),
+                createProductDto.getDescription(),
+                createProductDto.getPrice(),
+                createProductDto.getCategory(),
+                createProductDto.getImage());
     }
 }
