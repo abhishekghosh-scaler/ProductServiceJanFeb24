@@ -1,7 +1,7 @@
 package com.scaler.productservicejanfeb24.services;
 
-import com.scaler.productservicejanfeb24.dtos.CreateProductDto;
 import com.scaler.productservicejanfeb24.dtos.FakeStoreProductDto;
+import com.scaler.productservicejanfeb24.exceptions.ProductNotFoundException;
 import com.scaler.productservicejanfeb24.models.Product;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -46,14 +46,14 @@ public class FakeStoreProductService implements ProductService
     * https://fakestoreapi.com/products/
     * */
     @Override
-    public Product getSingleProduct(long id) {
+    public Product getSingleProduct(long id) throws ProductNotFoundException {
         ResponseEntity<FakeStoreProductDto> fakeStoreProductEntity = restTemplate.getForEntity("https://fakestoreapi.com/products/" + id, FakeStoreProductDto.class);
 
         FakeStoreProductDto fakeStoreProductDto = fakeStoreProductEntity.getBody();
 
         if(fakeStoreProductDto == null)
         {
-            return null;
+            throw new ProductNotFoundException("The id " + id + " does not have a matching record. It is invalid");
         }
 
         return fakeStoreProductDto.toProduct();

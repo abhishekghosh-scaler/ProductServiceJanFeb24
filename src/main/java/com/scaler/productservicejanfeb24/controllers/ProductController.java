@@ -1,8 +1,9 @@
 package com.scaler.productservicejanfeb24.controllers;
 
 import com.scaler.productservicejanfeb24.dtos.CreateProductDto;
+import com.scaler.productservicejanfeb24.dtos.ErrorDto;
+import com.scaler.productservicejanfeb24.exceptions.ProductNotFoundException;
 import com.scaler.productservicejanfeb24.models.Product;
-import com.scaler.productservicejanfeb24.services.FakeStoreProductService;
 import com.scaler.productservicejanfeb24.services.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +38,7 @@ public class ProductController
     * GET /products/{id}
     * */
     @GetMapping("/products/{id}")
-    public ResponseEntity<Product> getSingleProduct(@PathVariable("id") long id)
-    {
+    public ResponseEntity<Product> getSingleProduct(@PathVariable("id") long id) throws ProductNotFoundException {
         Product product = productService.getSingleProduct(id);
 
         ResponseEntity<Product> responseProductEntity;
@@ -78,4 +78,14 @@ public class ProductController
                 createProductDto.getCategory(),
                 createProductDto.getImage());
     }
+
+//    @ExceptionHandler(ProductNotFoundException.class)
+//    public ResponseEntity<ErrorDto> handleProductNotFoundException(ProductNotFoundException productNotFoundException)
+//    {
+//        ErrorDto errorDto = new ErrorDto();
+//        errorDto.setMessage(productNotFoundException.getMessage());
+//
+//        ResponseEntity<ErrorDto> responseEntity = new ResponseEntity<>(errorDto, HttpStatus.NOT_FOUND);
+//        return responseEntity;
+//    }
 }
