@@ -1,15 +1,19 @@
 package com.scaler.productservicejanfeb24.models;
 
-public class Product {
-    private long id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+
+@Entity
+public class Product extends BaseModel {
     private String title;
     private String description;
     private double price;
+
+    @ManyToOne
     private Category category;
     private String imageUrl;
 
-    public Product(long id, String title, String description, double price, Category category, String imageUrl) {
-        this.id = id;
+    public Product(String title, String description, double price, Category category, String imageUrl) {
         this.title = title;
         this.description = description;
         this.price = price;
@@ -18,10 +22,6 @@ public class Product {
     }
 
     public Product() {
-    }
-
-    public long getId() {
-        return this.id;
     }
 
     public String getTitle() {
@@ -42,10 +42,6 @@ public class Product {
 
     public String getImageUrl() {
         return this.imageUrl;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void setTitle(String title) {
