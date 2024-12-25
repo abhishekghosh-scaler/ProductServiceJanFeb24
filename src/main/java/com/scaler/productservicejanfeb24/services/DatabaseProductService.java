@@ -5,6 +5,7 @@ import com.scaler.productservicejanfeb24.models.Category;
 import com.scaler.productservicejanfeb24.models.Product;
 import com.scaler.productservicejanfeb24.repositories.CategoryRepository;
 import com.scaler.productservicejanfeb24.repositories.ProductRepository;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
