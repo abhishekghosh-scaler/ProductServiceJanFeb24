@@ -1,8 +1,11 @@
 package com.scaler.productservicejanfeb24;
 
+import com.scaler.productservicejanfeb24.models.Category;
 import com.scaler.productservicejanfeb24.models.Product;
+import com.scaler.productservicejanfeb24.repositories.CategoryRepository;
 import com.scaler.productservicejanfeb24.repositories.ProductRepository;
 import com.scaler.productservicejanfeb24.repositories.projections.ProductTitleAndDesc;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +19,9 @@ class ProductServiceJanFeb24ApplicationTests
 
     @Autowired
     ProductRepository productRepository;
+
+    @Autowired
+    CategoryRepository categoryRepository;
 
     @Test
     void contextLoads() {
@@ -56,6 +62,31 @@ class ProductServiceJanFeb24ApplicationTests
                 .getProductDataFromProjection(2L);
 
         System.out.println(productTitleAndDesc.getTitle() + ", " + productTitleAndDesc.getDescription());
+    }
+
+    @Test
+    @Transactional
+    void JPAFetchTypeTest()
+    {
+        Optional<Category> category = categoryRepository
+                .findById(1L);
+
+        System.out.println(category.get().getTitle());
+        System.out.println(category.get().getProducts());
+    }
+
+    @Test
+    void JPANPlusOneProblemTest()
+    {
+        List<Category> categories = categoryRepository.findAll();
+
+        for(Category category : categories)
+        {
+            for(Product product : category.getProducts())
+            {
+                System.out.println(product.getTitle());
+            }
+        }
     }
 
 }
