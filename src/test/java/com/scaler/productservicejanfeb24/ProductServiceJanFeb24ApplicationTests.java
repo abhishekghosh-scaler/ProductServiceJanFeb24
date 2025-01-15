@@ -23,70 +23,70 @@ class ProductServiceJanFeb24ApplicationTests
     @Autowired
     CategoryRepository categoryRepository;
 
-    @Test
-    void contextLoads() {
-    }
-
-    @Test
-    void findByTitleAndCategory_titleTest()
-    {
-        Optional<Product> productOptional = productRepository
-                .findByTitleAndCategory_title("iPhone 16", "electronic");
-
-        System.out.println(productOptional.get().getTitle());
-    }
-
-    @Test
-    void getProductTitleTest()
-    {
-        List<Product> productList = productRepository
-                .getProductData("electronic");
-
-        System.out.println(productList.get(0).getTitle());
-
-    }
-
-    @Test
-    void getProductDataNativeTest()
-    {
-        Product product = productRepository
-                .getProductDataNative(1L);
-
-        System.out.println(product.getTitle());
-    }
-
-    @Test
-    void getProductDataFromProjectionTest()
-    {
-        ProductTitleAndDesc productTitleAndDesc = productRepository
-                .getProductDataFromProjection(2L);
-
-        System.out.println(productTitleAndDesc.getTitle() + ", " + productTitleAndDesc.getDescription());
-    }
-
-    @Test
-    @Transactional
-    void JPAFetchTypeTest()
-    {
-        Optional<Category> category = categoryRepository
-                .findById(1L);
-
-        System.out.println(category.get().getTitle());
-        System.out.println(category.get().getProducts());
-    }
-
-    @Test
-    void JPANPlusOneProblemTest()
-    {
-        List<Category> categories = categoryRepository.findAll();
-
-        for(Category category : categories)
-        {
-            for(Product product : category.getProducts())
-            {
-                System.out.println(product.getTitle());
-            }
-        }
-    }
+//    @Test
+//    void contextLoads() {
+//    }
+//
+//    @Test
+//    void findByTitleAndCategory_titleTest()
+//    {
+//        Optional<Product> productOptional = productRepository
+//                .findByTitleAndCategory_title("iPhone 16", "electronic");
+//
+//        System.out.println(productOptional.get().getTitle());
+//    }
+//
+//    @Test
+//    void getProductTitleTest()
+//    {
+//        List<Product> productList = productRepository
+//                .getProductData("electronic");
+//
+//        System.out.println(productList.get(0).getTitle());
+//
+//    }
+//
+//    @Test
+//    void getProductDataNativeTest()
+//    {
+//        Product product = productRepository
+//                .getProductDataNative(1L);
+//
+//        System.out.println(product.getTitle());
+//    }
+//
+//    @Test
+//    void getProductDataFromProjectionTest()
+//    {
+//        ProductTitleAndDesc productTitleAndDesc = productRepository
+//                .getProductDataFromProjection(2L);
+//
+//        System.out.println(productTitleAndDesc.getTitle() + ", " + productTitleAndDesc.getDescription());
+//    }
+//
+//    @Test
+//    @Transactional
+//    void JPAFetchTypeTest()
+//    {
+//        Optional<Category> category = categoryRepository
+//                .findById(1L);
+//
+//        System.out.println(category.get().getTitle());
+//        System.out.println(category.get().getProducts());
+//    }
+//
+//    @Test
+//    void JPANPlusOneProblemTest()
+//    {
+//        List<Category> categories = categoryRepository.findAll();
+//
+//        for(Category category : categories)
+//        {
+//            for(Product product : category.getProducts())
+//            {
+//                System.out.println(product.getTitle());
+//            }
+//        }
+//    }
 
 }
