@@ -6,6 +6,7 @@ import com.scaler.productservicejanfeb24.models.Product;
 import com.scaler.productservicejanfeb24.repositories.CategoryRepository;
 import com.scaler.productservicejanfeb24.repositories.ProductRepository;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,12 +17,15 @@ public class DatabaseProductService implements ProductService {
 
     private ProductRepository productRepository;
     private CategoryRepository categoryRepository;
+    private RedisTemplate<String, Object> redisTemplate;
 
     public DatabaseProductService(ProductRepository productRepository,
-                                  CategoryRepository categoryRepository)
+                                  CategoryRepository categoryRepository,
+                                  RedisTemplate<String, Object> redisTemplate)
     {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
@@ -32,6 +36,12 @@ public class DatabaseProductService implements ProductService {
     @Override
     public Product getSingleProduct(long id) throws ProductNotFoundException
     {
+        Product productFromCache = (Product) redisTemplate.opsForValue().get(String.valueOf(id));
+        if(productFromCache != null)
+        {
+            return productFromCache;
+        }
+
         Optional<Product> productOptionalFromDb =   productRepository.findById(id);
 
         if(productOptionalFromDb.isEmpty())
@@ -39,7 +49,10 @@ public class DatabaseProductService implements ProductService {
             throw new ProductNotFoundException("Product not found");
         }
 
-        return productOptionalFromDb.get();
+        Product productFromDb = productOptionalFromDb.get();
+
+        redisTemplate.opsForValue().set(String.valueOf(id), productFromDb);
+        return productFromDb;
     }
 
     @Override

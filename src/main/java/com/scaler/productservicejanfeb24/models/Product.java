@@ -4,8 +4,10 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 
+import java.io.Serializable;
+
 @Entity
-public class Product extends BaseModel {
+public class Product extends BaseModel implements Serializable {
     private String title;
     private String description;
     private double price;
